@@ -19,26 +19,28 @@ export function Landing() {
 
 function Nav() {
   return (
-    <nav className="px-6 lg:px-12 py-6 flex items-center justify-between">
-      <Wordmark size="sm" />
-      <div className="flex items-center gap-2 text-sm">
+    <nav className="px-5 sm:px-6 lg:px-12 py-5 lg:py-6 flex items-center justify-between gap-3">
+      <Wordmark size="sm" className="shrink-0" />
+      <div className="flex items-center gap-1 sm:gap-2 text-sm">
         <Link
           href="/about"
-          className="px-4 py-2 rounded-md text-text-2 hover:text-text transition-colors"
+          className="px-3 sm:px-4 py-2 rounded-md text-text-2 hover:text-text transition-colors whitespace-nowrap"
         >
-          About this project
+          <span className="sm:hidden">About</span>
+          <span className="hidden sm:inline">About this project</span>
         </Link>
         <Link
           href="/login"
-          className="px-4 py-2 rounded-md text-text-2 hover:text-text transition-colors"
+          className="hidden sm:inline-flex px-3 sm:px-4 py-2 rounded-md text-text-2 hover:text-text transition-colors whitespace-nowrap"
         >
           Sign in
         </Link>
         <Link
           href="/signup"
-          className="px-4 py-2 rounded-md border border-accent/40 text-accent hover:bg-accent/10 transition-colors"
+          className="px-3 sm:px-4 py-2 rounded-md border border-accent/40 text-accent hover:bg-accent/10 transition-colors whitespace-nowrap"
         >
-          Make an account
+          <span className="sm:hidden">Sign up</span>
+          <span className="hidden sm:inline">Make an account</span>
         </Link>
       </div>
     </nav>

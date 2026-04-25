@@ -30,28 +30,29 @@ export default function AboutPage() {
 
 function Nav() {
   return (
-    <nav className="px-6 lg:px-12 py-6 flex items-center justify-between">
-      <Link href="/" aria-label="CrypTalk home">
+    <nav className="px-5 sm:px-6 lg:px-12 py-5 lg:py-6 flex items-center justify-between gap-3">
+      <Link href="/" aria-label="CrypTalk home" className="shrink-0">
         <Wordmark size="sm" />
       </Link>
-      <div className="flex items-center gap-2 text-sm">
+      <div className="flex items-center gap-1 sm:gap-2 text-sm">
         <Link
           href="/"
-          className="px-4 py-2 rounded-md text-text-2 hover:text-text transition-colors"
+          className="hidden sm:inline-flex px-3 sm:px-4 py-2 rounded-md text-text-2 hover:text-text transition-colors whitespace-nowrap"
         >
           Home
         </Link>
         <Link
           href="/login"
-          className="px-4 py-2 rounded-md text-text-2 hover:text-text transition-colors"
+          className="px-3 sm:px-4 py-2 rounded-md text-text-2 hover:text-text transition-colors whitespace-nowrap"
         >
           Sign in
         </Link>
         <Link
           href="/signup"
-          className="px-4 py-2 rounded-md border border-accent/40 text-accent hover:bg-accent/10 transition-colors"
+          className="px-3 sm:px-4 py-2 rounded-md border border-accent/40 text-accent hover:bg-accent/10 transition-colors whitespace-nowrap"
         >
-          Make an account
+          <span className="sm:hidden">Sign up</span>
+          <span className="hidden sm:inline">Make an account</span>
         </Link>
       </div>
     </nav>
@@ -60,22 +61,22 @@ function Nav() {
 
 function Masthead() {
   return (
-    <section className="px-6 lg:px-12 pt-10 lg:pt-16 max-w-[1200px] mx-auto">
-      <div className="rounded-2xl border bg-surface px-8 lg:px-14 py-10 lg:py-14 surface-grain animate-fade-up">
-        <div className="flex items-start gap-6 lg:gap-8">
+    <section className="px-5 sm:px-6 lg:px-12 pt-8 lg:pt-16 max-w-[1200px] mx-auto">
+      <div className="rounded-2xl border bg-surface px-6 sm:px-8 lg:px-14 py-8 sm:py-10 lg:py-14 surface-grain animate-fade-up">
+        <div className="flex flex-col sm:flex-row sm:items-start gap-5 sm:gap-6 lg:gap-8">
           <CollegeCrest />
           <div className="flex-1 min-w-0">
             <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-accent">
               Established 1979 · Bengaluru
             </p>
-            <h1 className="font-display text-[clamp(1.5rem,3.4vw,2.6rem)] leading-[1.05] mt-2 text-balance">
+            <h1 className="font-display text-[clamp(1.6rem,4.5vw,2.6rem)] leading-[1.05] mt-2 text-balance">
               Dayananda Sagar College of Engineering
             </h1>
             <p className="mt-3 text-text-2 text-sm lg:text-base">
               Department of Computer Science &amp; Engineering
               <span className="text-accent"> · Cybersecurity</span>
             </p>
-            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-mono text-muted">
+            <div className="mt-5 sm:mt-6 flex flex-wrap items-center gap-x-5 sm:gap-x-6 gap-y-2 text-[11px] sm:text-xs font-mono text-muted">
               <Tag>Major Project Phase&nbsp;I</Tag>
               <Tag>2025 — 2026</Tag>
               <Tag>Group G-13</Tag>
@@ -98,7 +99,7 @@ function Tag({ children }: { children: React.ReactNode }) {
 
 function CollegeCrest() {
   return (
-    <div className="shrink-0 grid place-items-center w-24 h-24 lg:w-28 lg:h-28 rounded-full bg-white p-2 relative ring-1 ring-accent/40">
+    <div className="shrink-0 self-start grid place-items-center w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 rounded-full bg-white p-2 relative ring-1 ring-accent/40">
       <Image
         src="/dsce-logo.png"
         alt="Dayananda Sagar Institutions"
@@ -113,15 +114,15 @@ function CollegeCrest() {
 
 function ProjectTitle() {
   return (
-    <section className="px-6 lg:px-12 pt-16 lg:pt-24 max-w-[1200px] mx-auto">
+    <section className="px-5 sm:px-6 lg:px-12 pt-12 lg:pt-24 max-w-[1200px] mx-auto">
       <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted">
-        Literature Review Presentation · Domain: Cryptography &amp; Steganography
+        Literature Review · Cryptography &amp; Steganography
       </p>
-      <h2 className="font-display text-[clamp(2.6rem,6vw,5.5rem)] leading-[0.95] mt-5 text-balance">
+      <h2 className="font-display text-[clamp(2rem,7vw,5.5rem)] leading-[0.98] sm:leading-[0.95] mt-4 sm:mt-5 text-balance break-words hyphens-auto">
         <span className="text-accent">CrypTalk:</span> Enhancing Privacy through
         Encrypted Steganographic Messaging.
       </h2>
-      <p className="mt-8 text-lg text-text-2 max-w-3xl text-pretty leading-relaxed">
+      <p className="mt-6 sm:mt-8 text-base sm:text-lg text-text-2 max-w-3xl text-pretty leading-relaxed">
         A browser-native messaging system that encrypts every text and audio
         message with AES-256-GCM and threads the ciphertext into the
         least-significant bits of a pre-verified PNG. The server only ever sees
@@ -133,17 +134,17 @@ function ProjectTitle() {
 
 function People() {
   return (
-    <section className="px-6 lg:px-12 py-16 lg:py-20 max-w-[1200px] mx-auto">
-      <header className="mb-10">
+    <section className="px-5 sm:px-6 lg:px-12 py-14 sm:py-16 lg:py-20 max-w-[1200px] mx-auto">
+      <header className="mb-8 sm:mb-10">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted">
           Presented by
         </p>
-        <h3 className="font-display text-[clamp(1.6rem,3vw,2.4rem)] mt-2 leading-[1]">
+        <h3 className="font-display text-[clamp(1.5rem,4vw,2.4rem)] mt-2 leading-[1.05]">
           Two students, one guide.
         </h3>
       </header>
 
-      <div className="grid lg:grid-cols-3 gap-px bg-border rounded-2xl overflow-hidden border">
+      <div className="grid md:grid-cols-3 gap-px bg-border rounded-2xl overflow-hidden border">
         <PersonCard
           role="Student"
           name="Amritraj Vats"
@@ -183,7 +184,7 @@ function PersonCard({
 }) {
   return (
     <article
-      className={`p-8 lg:p-10 flex flex-col gap-6 ${
+      className={`p-6 sm:p-8 lg:p-10 flex flex-col gap-5 sm:gap-6 ${
         highlight ? "bg-surface" : "bg-bg"
       }`}
     >
@@ -200,8 +201,12 @@ function PersonCard({
       </div>
       <Avatar initials={initials} highlight={highlight} />
       <div>
-        <h4 className="font-display text-2xl leading-[1.05]">{name}</h4>
-        <p className="mt-1 text-sm font-mono text-text-2">{usn}</p>
+        <h4 className="font-display text-xl sm:text-2xl leading-[1.05] break-words">
+          {name}
+        </h4>
+        <p className="mt-1 text-sm font-mono text-text-2 break-all sm:break-normal">
+          {usn}
+        </p>
       </div>
     </article>
   );
@@ -230,17 +235,17 @@ function Avatar({
 
 function Abstract() {
   return (
-    <section className="px-6 lg:px-12 py-16 lg:py-20 max-w-[1200px] mx-auto">
-      <div className="grid lg:grid-cols-[280px_1fr] gap-12 lg:gap-20">
+    <section className="px-5 sm:px-6 lg:px-12 py-14 sm:py-16 lg:py-20 max-w-[1200px] mx-auto">
+      <div className="grid lg:grid-cols-[280px_1fr] gap-8 lg:gap-20">
         <div>
           <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-accent">
             Abstract
           </p>
-          <h3 className="font-display text-[clamp(1.6rem,3vw,2.4rem)] mt-2 leading-[1]">
+          <h3 className="font-display text-[clamp(1.5rem,4vw,2.4rem)] mt-2 leading-[1.05]">
             What we built and why.
           </h3>
         </div>
-        <div className="space-y-5 text-text-2 text-pretty leading-relaxed lg:text-[1.05rem]">
+        <div className="space-y-5 text-[0.95rem] sm:text-base text-text-2 text-pretty leading-relaxed lg:text-[1.05rem]">
           <p>
             Secure digital communication still faces many risks — hackers
             accessing private data, leakage of message metadata, and attacks on
@@ -307,16 +312,16 @@ function ProblemAndObjectives() {
   ];
 
   return (
-    <section className="px-6 lg:px-12 py-16 lg:py-20 max-w-[1200px] mx-auto">
-      <div className="grid lg:grid-cols-12 gap-12">
+    <section className="px-5 sm:px-6 lg:px-12 py-14 sm:py-16 lg:py-20 max-w-[1200px] mx-auto">
+      <div className="grid lg:grid-cols-12 gap-10 lg:gap-12">
         <div className="lg:col-span-5">
           <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-accent">
             Problem statement
           </p>
-          <h3 className="font-display text-[clamp(1.8rem,3.5vw,2.8rem)] mt-2 leading-[1.02] text-balance">
+          <h3 className="font-display text-[clamp(1.6rem,4.5vw,2.8rem)] mt-2 leading-[1.05] text-balance">
             What happens after a login is breached?
           </h3>
-          <p className="mt-6 text-text-2 leading-relaxed text-pretty">
+          <p className="mt-5 sm:mt-6 text-[0.95rem] sm:text-base text-text-2 leading-relaxed text-pretty">
             In most messaging applications, message content is stored or
             displayed in plain text once the user logs in. If the device or
             account is hacked, the attacker can easily access private messages.
@@ -328,14 +333,14 @@ function ProblemAndObjectives() {
         </div>
 
         <div className="lg:col-span-7">
-          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted mb-5">
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted mb-4 sm:mb-5">
             Objectives
           </p>
           <ul className="grid sm:grid-cols-2 gap-px bg-border rounded-xl overflow-hidden border">
             {objectives.map((o, i) => (
               <li
                 key={o.kicker}
-                className={`bg-bg p-6 ${
+                className={`bg-bg p-5 sm:p-6 ${
                   i === objectives.length - 1 && objectives.length % 2 === 1
                     ? "sm:col-span-2"
                     : ""
@@ -397,17 +402,17 @@ function Methodology() {
   ];
 
   return (
-    <section className="px-6 lg:px-12 py-16 lg:py-20 max-w-[1200px] mx-auto">
-      <header className="mb-12 grid lg:grid-cols-[280px_1fr] gap-12 lg:gap-20 items-end">
+    <section className="px-5 sm:px-6 lg:px-12 py-14 sm:py-16 lg:py-20 max-w-[1200px] mx-auto">
+      <header className="mb-10 sm:mb-12 grid lg:grid-cols-[280px_1fr] gap-6 lg:gap-20 items-end">
         <div>
           <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-accent">
             Proposed methodology
           </p>
-          <h3 className="font-display text-[clamp(1.8rem,3.5vw,2.8rem)] mt-2 leading-[1.02]">
+          <h3 className="font-display text-[clamp(1.6rem,4.5vw,2.8rem)] mt-2 leading-[1.05]">
             Six stations on the round-trip.
           </h3>
         </div>
-        <p className="text-text-2 text-pretty leading-relaxed max-w-xl lg:justify-self-end">
+        <p className="text-[0.95rem] sm:text-base text-text-2 text-pretty leading-relaxed max-w-xl lg:justify-self-end">
           Each step is small, deterministic, and verifiable. None of them
           require trust in the server.
         </p>
@@ -415,7 +420,7 @@ function Methodology() {
 
       <ol className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border rounded-2xl overflow-hidden border">
         {steps.map((s) => (
-          <li key={s.n} className="bg-bg p-7 lg:p-8">
+          <li key={s.n} className="bg-bg p-6 sm:p-7 lg:p-8">
             <div className="flex items-baseline justify-between mb-5">
               <span className="font-mono text-xs text-muted">{s.n}</span>
               <span aria-hidden className="w-1 h-1 rounded-full bg-accent" />
@@ -435,18 +440,18 @@ function Methodology() {
 
 function Architecture() {
   return (
-    <section className="px-6 lg:px-12 py-16 lg:py-20 max-w-[1200px] mx-auto">
-      <header className="mb-10">
+    <section className="px-5 sm:px-6 lg:px-12 py-14 sm:py-16 lg:py-20 max-w-[1200px] mx-auto">
+      <header className="mb-8 sm:mb-10">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-accent">
           System architecture
         </p>
-        <h3 className="font-display text-[clamp(1.8rem,3.5vw,2.8rem)] mt-2 leading-[1.02] text-balance">
+        <h3 className="font-display text-[clamp(1.6rem,4.5vw,2.8rem)] mt-2 leading-[1.05] text-balance">
           Four bands of work, one quiet PNG.
         </h3>
       </header>
 
-      <div className="rounded-2xl border bg-bg-2 p-6 lg:p-10 surface-grain">
-        <div className="grid lg:grid-cols-4 gap-3">
+      <div className="rounded-2xl border bg-bg-2 p-5 sm:p-6 lg:p-10 surface-grain">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <Band
             label="Input"
             color="oklch(70% 0.10 230)"
@@ -469,13 +474,13 @@ function Architecture() {
           />
         </div>
 
-        <div className="mt-10 grid sm:grid-cols-3 gap-px bg-border rounded-xl overflow-hidden border">
+        <div className="mt-8 sm:mt-10 grid sm:grid-cols-3 gap-px bg-border rounded-xl overflow-hidden border">
           <Stat label="Cipher" value="AES-256-GCM" sub="Authenticated encryption" />
           <Stat label="KDF" value="PBKDF2" sub="600,000 iterations" />
           <Stat label="Capacity" value="≈ 11 MB" sub="per 6930×4622 PNG" />
         </div>
 
-        <p className="mt-8 text-sm text-text-2 leading-relaxed max-w-3xl text-pretty">
+        <p className="mt-6 sm:mt-8 text-sm text-text-2 leading-relaxed max-w-3xl text-pretty">
           A single 37.6 MB cover PNG yields roughly{" "}
           <Mark>96 million bits</Mark> of carrying capacity at one LSB per
           channel — enough for 45–50 minutes of 32 kbps voice, or 91–93 minutes
@@ -534,11 +539,13 @@ function Stat({
   sub: string;
 }) {
   return (
-    <div className="bg-bg p-6">
+    <div className="bg-bg p-5 sm:p-6">
       <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted">
         {label}
       </p>
-      <p className="font-display text-2xl mt-2 leading-tight">{value}</p>
+      <p className="font-display text-xl sm:text-2xl mt-2 leading-tight">
+        {value}
+      </p>
       <p className="text-xs text-text-2 mt-1.5">{sub}</p>
     </div>
   );
@@ -565,12 +572,12 @@ function Outcomes() {
   ];
 
   return (
-    <section className="px-6 lg:px-12 py-16 lg:py-20 max-w-[1200px] mx-auto">
-      <header className="mb-12">
+    <section className="px-5 sm:px-6 lg:px-12 py-14 sm:py-16 lg:py-20 max-w-[1200px] mx-auto">
+      <header className="mb-10 sm:mb-12">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-accent">
           Possible outcomes
         </p>
-        <h3 className="font-display text-[clamp(1.8rem,3.5vw,2.8rem)] mt-2 leading-[1.02] text-balance">
+        <h3 className="font-display text-[clamp(1.6rem,4.5vw,2.8rem)] mt-2 leading-[1.05] text-balance">
           What success looks like for Phase&nbsp;I.
         </h3>
       </header>
@@ -579,7 +586,7 @@ function Outcomes() {
         {items.map((o, i) => (
           <article
             key={o.title}
-            className="bg-bg p-8 lg:p-9 group hover:bg-surface transition-colors"
+            className="bg-bg p-6 sm:p-8 lg:p-9 group hover:bg-surface transition-colors"
           >
             <div className="flex items-baseline justify-between mb-4">
               <span className="font-mono text-xs text-muted">
@@ -587,7 +594,7 @@ function Outcomes() {
               </span>
               <span aria-hidden className="w-1 h-1 rounded-full bg-accent" />
             </div>
-            <h4 className="font-display text-2xl mb-3 group-hover:text-accent transition-colors">
+            <h4 className="font-display text-xl sm:text-2xl mb-3 group-hover:text-accent transition-colors">
               {o.title}
             </h4>
             <p className="text-text-2 text-sm leading-relaxed text-pretty">
@@ -630,17 +637,17 @@ function FutureScope() {
   ];
 
   return (
-    <section className="px-6 lg:px-12 py-16 lg:py-20 max-w-[1200px] mx-auto">
-      <header className="mb-12 grid lg:grid-cols-[280px_1fr] gap-12 lg:gap-20 items-end">
+    <section className="px-5 sm:px-6 lg:px-12 py-14 sm:py-16 lg:py-20 max-w-[1200px] mx-auto">
+      <header className="mb-10 sm:mb-12 grid lg:grid-cols-[280px_1fr] gap-6 lg:gap-20 items-end">
         <div>
           <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-accent">
             Future scope
           </p>
-          <h3 className="font-display text-[clamp(1.8rem,3.5vw,2.8rem)] mt-2 leading-[1.02]">
+          <h3 className="font-display text-[clamp(1.6rem,4.5vw,2.8rem)] mt-2 leading-[1.05]">
             Where Phase&nbsp;II goes next.
           </h3>
         </div>
-        <p className="text-text-2 text-pretty leading-relaxed max-w-xl lg:justify-self-end">
+        <p className="text-[0.95rem] sm:text-base text-text-2 text-pretty leading-relaxed max-w-xl lg:justify-self-end">
           Phase I lands a working prototype. Phase II hardens it against modern
           detection and broadens the carrier surface.
         </p>
@@ -650,10 +657,16 @@ function FutureScope() {
         {items.map((it) => (
           <li
             key={it.n}
-            className="bg-bg p-6 lg:p-8 grid grid-cols-[auto_1fr] sm:grid-cols-[auto_240px_1fr] gap-6 lg:gap-10 items-start"
+            className="bg-bg p-5 sm:p-6 lg:p-8 grid grid-cols-1 md:grid-cols-[auto_240px_1fr] gap-y-2 md:gap-x-10 md:items-start"
           >
-            <span className="font-mono text-xs text-muted pt-1">{it.n}</span>
-            <h4 className="font-display text-xl leading-tight">{it.title}</h4>
+            <div className="flex items-baseline gap-3 md:contents">
+              <span className="font-mono text-xs text-muted md:pt-1">
+                {it.n}
+              </span>
+              <h4 className="font-display text-lg sm:text-xl leading-tight">
+                {it.title}
+              </h4>
+            </div>
             <p className="text-sm text-text-2 leading-relaxed text-pretty">
               {it.desc}
             </p>
@@ -718,12 +731,12 @@ function References() {
   ];
 
   return (
-    <section className="px-6 lg:px-12 py-16 lg:py-20 max-w-[1200px] mx-auto">
-      <header className="mb-10">
+    <section className="px-5 sm:px-6 lg:px-12 py-14 sm:py-16 lg:py-20 max-w-[1200px] mx-auto">
+      <header className="mb-8 sm:mb-10">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-accent">
           References
         </p>
-        <h3 className="font-display text-[clamp(1.8rem,3.5vw,2.8rem)] mt-2 leading-[1.02]">
+        <h3 className="font-display text-[clamp(1.6rem,4.5vw,2.8rem)] mt-2 leading-[1.05]">
           The shoulders we stand on.
         </h3>
       </header>
@@ -732,14 +745,14 @@ function References() {
         {refs.map((r) => (
           <li
             key={r.n}
-            className="bg-bg p-6 lg:p-7 grid sm:grid-cols-[auto_1fr_auto] gap-x-6 gap-y-2 items-baseline"
+            className="bg-bg p-5 sm:p-6 lg:p-7 grid grid-cols-[auto_1fr] md:grid-cols-[auto_1fr_auto] gap-x-4 sm:gap-x-6 gap-y-1.5 items-baseline"
           >
             <span className="font-mono text-xs text-accent">{r.n}</span>
             <div>
               <p className="text-sm text-text leading-snug">{r.title}</p>
               <p className="text-xs text-text-2 mt-1">{r.authors}</p>
             </div>
-            <span className="font-mono text-[11px] text-muted whitespace-nowrap">
+            <span className="font-mono text-[11px] text-muted md:whitespace-nowrap col-start-2 md:col-start-3 mt-0.5 md:mt-0">
               {r.venue} · {r.year}
             </span>
           </li>
@@ -751,9 +764,9 @@ function References() {
 
 function Footer() {
   return (
-    <footer className="px-6 lg:px-12 py-10 mt-12 border-t border-border/50 text-xs text-muted flex flex-wrap items-center gap-x-6 gap-y-2 justify-between">
+    <footer className="px-5 sm:px-6 lg:px-12 py-8 sm:py-10 mt-10 sm:mt-12 border-t border-border/50 text-xs text-muted flex flex-wrap items-center gap-x-6 gap-y-3 justify-between">
       <Wordmark size="sm" className="opacity-60" />
-      <span>
+      <span className="text-[11px] sm:text-xs leading-relaxed">
         Major Project Phase I · DSCE · Cybersecurity · 2025–2026 · Group G-13
       </span>
       <div className="flex items-center gap-4">
