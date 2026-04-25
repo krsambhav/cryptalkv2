@@ -23,6 +23,12 @@ function Nav() {
       <Wordmark size="sm" />
       <div className="flex items-center gap-2 text-sm">
         <Link
+          href="/about"
+          className="px-4 py-2 rounded-md text-text-2 hover:text-text transition-colors"
+        >
+          About this project
+        </Link>
+        <Link
           href="/login"
           className="px-4 py-2 rounded-md text-text-2 hover:text-text transition-colors"
         >

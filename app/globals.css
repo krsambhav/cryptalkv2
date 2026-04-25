@@ -182,6 +182,18 @@ body {
   border-radius: var(--radius-xs);
 }
 
+/* form inputs handle their own focus styling (Antd inputs paint a
+   border, the chat composer is intentionally unadorned). don't double
+   up with the global accent ring. */
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible,
+select:focus,
+select:focus-visible {
+  outline: none;
+}
+
 /* utility: noise texture overlay for surface depth (no gradient text, no blur) */
 .surface-grain {
   position: relative;
