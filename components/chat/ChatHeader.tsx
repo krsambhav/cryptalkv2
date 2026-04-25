@@ -2,23 +2,32 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Dropdown, type MenuProps } from "antd";
 
 interface Props {
   recipient: string;
   unlocked: boolean;
+  phraseSaved: boolean;
   messageCount: number;
   showRaw: boolean;
   onToggleRaw(): void;
   onUnlock(): void;
+  onLock(): void;
+  onChangePhrase(): void;
+  onForgetPhrase(): void;
 }
 
 export function ChatHeader({
   recipient,
   unlocked,
+  phraseSaved,
   messageCount,
   showRaw,
   onToggleRaw,
   onUnlock,
+  onLock,
+  onChangePhrase,
+  onForgetPhrase,
 }: Props) {
   return (
     <header className="sticky top-0 z-10 backdrop-blur bg-bg/80 border-b border-border/60">
@@ -38,7 +47,15 @@ export function ChatHeader({
         </div>
 
         {unlocked ? (
-          <ViewToggle showRaw={showRaw} onToggle={onToggleRaw} />
+          <div className="flex items-center gap-2">
+            <ViewToggle showRaw={showRaw} onToggle={onToggleRaw} />
+            <LockButton onClick={onLock} />
+            <MoreActionsMenu
+              phraseSaved={phraseSaved}
+              onChangePhrase={onChangePhrase}
+              onForgetPhrase={onForgetPhrase}
+            />
+          </div>
         ) : (
           <UnlockButton onClick={onUnlock} />
         )}
@@ -69,6 +86,81 @@ function UnlockButton({ onClick }: { onClick(): void }) {
       </svg>
       <span>Unlock</span>
     </button>
+  );
+}
+
+function LockButton({ onClick }: { onClick(): void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label="Lock conversation"
+      title="Lock conversation"
+      className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-border/60 hover:border-border hover:bg-surface text-text-2 hover:text-text active:scale-[0.97] transition"
+    >
+      <svg width="13" height="13" viewBox="0 0 20 20" fill="none" aria-hidden>
+        <rect x="5" y="9" width="10" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
+        <path d="M7 9V6a3 3 0 015.5-1.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      </svg>
+    </button>
+  );
+}
+
+function MoreActionsMenu({
+  phraseSaved,
+  onChangePhrase,
+  onForgetPhrase,
+}: {
+  phraseSaved: boolean;
+  onChangePhrase(): void;
+  onForgetPhrase(): void;
+}) {
+  const items: MenuProps["items"] = [
+    {
+      key: "change",
+      label: "Change passphrase",
+      onClick: onChangePhrase,
+    },
+    ...(phraseSaved
+      ? [
+          { type: "divider" as const },
+          {
+            key: "forget",
+            label: "Forget saved passphrase",
+            danger: true,
+            onClick: onForgetPhrase,
+          },
+        ]
+      : []),
+  ];
+
+  return (
+    <Dropdown
+      menu={{ items }}
+      trigger={["click"]}
+      placement="bottomRight"
+      overlayStyle={{ minWidth: 200 }}
+    >
+      <button
+        type="button"
+        aria-label="More actions"
+        title="More actions"
+        className="inline-flex items-center justify-center w-8 h-8 rounded-full border border-border/60 hover:border-border hover:bg-surface text-text-2 hover:text-text active:scale-[0.97] transition relative"
+      >
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor" aria-hidden>
+          <circle cx="10" cy="4.5" r="1.4" />
+          <circle cx="10" cy="10" r="1.4" />
+          <circle cx="10" cy="15.5" r="1.4" />
+        </svg>
+        {phraseSaved && (
+          <span
+            aria-hidden
+            className="absolute top-0.5 right-0.5 w-1.5 h-1.5 rounded-full bg-accent"
+            title="Phrase saved on this device"
+          />
+        )}
+      </button>
+    </Dropdown>
   );
 }
 

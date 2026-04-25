@@ -70,6 +70,34 @@
   --color-accent-rgb: 220 178 110;
 }
 
+/* explicit dark scope — usable on subtrees that should always render
+   on the dark palette even when the page is in light mode (e.g. the
+   auth brand panel sitting on a dark cover image) */
+[data-theme="dark"] {
+  --color-bg: oklch(15% 0.012 75);
+  --color-bg-2: oklch(13% 0.011 75);
+  --color-surface: oklch(19% 0.014 75);
+  --color-surface-2: oklch(23% 0.016 75);
+  --color-surface-3: oklch(28% 0.018 75);
+  --color-border: oklch(28% 0.018 75);
+  --color-border-strong: oklch(38% 0.022 75);
+  --color-text: oklch(95% 0.010 75);
+  --color-text-2: oklch(75% 0.014 75);
+  --color-muted: oklch(58% 0.018 75);
+  --color-faint: oklch(40% 0.018 75);
+  --color-accent: oklch(78% 0.13 75);
+  --color-accent-2: oklch(85% 0.10 75);
+  --color-accent-faint: oklch(35% 0.06 75);
+  --color-success: oklch(72% 0.10 150);
+  --color-warn: oklch(75% 0.13 60);
+  --color-danger: oklch(65% 0.16 25);
+
+  --color-bg-rgb: 31 27 22;
+  --color-accent-rgb: 220 178 110;
+
+  color: var(--color-text);
+}
+
 /* light theme — parchment & ink */
 :root[data-theme="light"] {
   --color-bg: oklch(98% 0.006 80);

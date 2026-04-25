@@ -8,7 +8,10 @@ import { Wordmark } from "@/components/brand/Wordmark";
  */
 export function BrandPanel() {
   return (
-    <aside className="relative hidden lg:flex flex-col justify-between overflow-hidden">
+    <aside
+      data-theme="dark"
+      className="relative hidden lg:flex flex-col justify-between overflow-hidden text-text"
+    >
       <img
         src="/covers/01-amber-dusk.png"
         alt=""

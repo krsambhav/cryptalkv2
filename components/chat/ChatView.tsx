@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { App } from "antd";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useSession } from "@/stores/session";
 import { getConversation, listenMessages, type MessageRow } from "@/lib/firebase";
+import { base64ToBuffer, deriveKey } from "@/lib/crypto";
+import { clearPhrase, hasSavedPhrase, loadPhrase } from "@/lib/savedPhrase";
 import type { ConversationDocT } from "@/types/firestore";
 import { ChatHeader } from "./ChatHeader";
 import { PassphraseModal } from "./PassphraseModal";
@@ -21,11 +23,20 @@ export function ChatView({ convoId }: Props) {
   const { user } = useAuth();
   const { message } = App.useApp();
   const hasKey = useSession((s) => s.hasKey(convoId));
+  const setSessionKey = useSession((s) => s.setKey);
+  const clearKey = useSession((s) => s.clearKey);
   const [convo, setConvo] = useState<ConversationDocT | null>(null);
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState<MessageRow[]>([]);
   const [unlockOpen, setUnlockOpen] = useState(false);
+  const [unlockMode, setUnlockMode] = useState<"unlock" | "change">("unlock");
   const [showRaw, setShowRaw] = useState(false);
+  const [phraseSaved, setPhraseSaved] = useState(false);
+  const autoUnlockTried = useRef(false);
+
+  useEffect(() => {
+    setPhraseSaved(hasSavedPhrase(convoId));
+  }, [convoId]);
 
   useEffect(() => {
     let cancelled = false;
@@ -63,6 +74,30 @@ export function ChatView({ convoId }: Props) {
     return () => unsub();
   }, [convo, convoId]);
 
+  // Auto-unlock from a saved (encrypted) phrase if one is present for
+  // this conversation on this device. Runs once per chat-view mount.
+  useEffect(() => {
+    if (!convo || hasKey || autoUnlockTried.current) return;
+    autoUnlockTried.current = true;
+    let cancelled = false;
+    (async () => {
+      const phrase = await loadPhrase(convoId);
+      if (cancelled || !phrase) return;
+      try {
+        const salt = base64ToBuffer(convo.salt);
+        const key = await deriveKey(phrase, salt);
+        if (!cancelled) setSessionKey(convoId, key);
+      } catch {
+        // Saved phrase no longer derives a working key — drop it so
+        // the user gets prompted next time.
+        clearPhrase(convoId);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [convo, convoId, hasKey, setSessionKey]);
+
   if (loading || !convo || !user) {
     return (
       <div className="flex-1 flex items-center justify-center text-muted text-sm">
@@ -80,10 +115,29 @@ export function ChatView({ convoId }: Props) {
       <ChatHeader
         recipient={recipient}
         unlocked={hasKey}
+        phraseSaved={phraseSaved}
         messageCount={messages.length}
         showRaw={showRaw}
         onToggleRaw={() => setShowRaw((v) => !v)}
-        onUnlock={() => setUnlockOpen(true)}
+        onUnlock={() => {
+          setUnlockMode("unlock");
+          setUnlockOpen(true);
+        }}
+        onChangePhrase={() => {
+          setUnlockMode("change");
+          setUnlockOpen(true);
+        }}
+        onForgetPhrase={() => {
+          clearPhrase(convoId);
+          clearKey(convoId);
+          setPhraseSaved(false);
+          setShowRaw(false);
+          message.success("Saved passphrase cleared.");
+        }}
+        onLock={() => {
+          clearKey(convoId);
+          setShowRaw(false);
+        }}
       />
 
       <MessageList
@@ -108,7 +162,11 @@ export function ChatView({ convoId }: Props) {
         open={unlockOpen}
         convoId={convoId}
         saltBase64={convo.salt}
-        onUnlocked={() => setUnlockOpen(false)}
+        mode={unlockMode}
+        onUnlocked={() => {
+          setUnlockOpen(false);
+          setPhraseSaved(hasSavedPhrase(convoId));
+        }}
         onCancel={() => setUnlockOpen(false)}
       />
     </div>

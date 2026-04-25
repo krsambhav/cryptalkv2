@@ -6,7 +6,7 @@ export function EmptyConversation() {
   return (
     <div className="hidden lg:flex h-full items-center justify-center p-12">
       <div className="text-center max-w-md">
-        <div className="relative mx-auto w-32 h-24 mb-8">
+        <div data-theme="dark" className="relative mx-auto w-32 h-24 mb-8">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/covers/05-night-snow.png"

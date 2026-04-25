@@ -13,7 +13,10 @@ export function CipherStream() {
   const lines = useStreamingHex();
 
   return (
-    <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-border bg-surface group animate-fade-up [animation-delay:120ms]">
+    <div
+      data-theme="dark"
+      className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-border bg-surface group animate-fade-up [animation-delay:120ms]"
+    >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/covers/02-sea-cliffs.png"
