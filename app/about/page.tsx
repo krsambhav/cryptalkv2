@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Wordmark } from "@/components/brand/Wordmark";
 import { ThemeToggle } from "@/components/brand/ThemeToggle";
@@ -97,71 +98,15 @@ function Tag({ children }: { children: React.ReactNode }) {
 
 function CollegeCrest() {
   return (
-    <div
-      aria-hidden
-      className="shrink-0 grid place-items-center w-20 h-20 lg:w-24 lg:h-24 rounded-full border border-accent/50 bg-bg-2 relative"
-      style={{
-        boxShadow:
-          "inset 0 0 0 1px color-mix(in oklch, var(--color-accent) 20%, transparent)",
-      }}
-    >
-      <svg viewBox="0 0 96 96" width="100%" height="100%">
-        <defs>
-          <radialGradient id="crest-glow" cx="50%" cy="40%" r="60%">
-            <stop offset="0%" stopColor="rgb(var(--color-accent-rgb) / 0.55)" />
-            <stop offset="100%" stopColor="rgb(var(--color-accent-rgb) / 0)" />
-          </radialGradient>
-        </defs>
-        <circle cx="48" cy="48" r="42" fill="url(#crest-glow)" />
-        <circle
-          cx="48"
-          cy="48"
-          r="36"
-          fill="none"
-          stroke="currentColor"
-          strokeOpacity="0.55"
-          strokeWidth="1"
-        />
-        <circle
-          cx="48"
-          cy="48"
-          r="28"
-          fill="none"
-          stroke="currentColor"
-          strokeOpacity="0.35"
-          strokeWidth="1"
-          strokeDasharray="2 3"
-        />
-        {/* Stylized DSCE monogram — D crossed by an upward chevron echoing the
-            CrypTalk wax-seal mark */}
-        <path
-          d="M34 30 H46 a16 16 0 0 1 0 32 H34 z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M52 60 L62 46 L72 60"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <text
-          x="48"
-          y="86"
-          textAnchor="middle"
-          fontSize="7"
-          letterSpacing="2"
-          fill="currentColor"
-          opacity="0.7"
-          fontFamily="var(--font-mono)"
-        >
-          DSCE
-        </text>
-      </svg>
+    <div className="shrink-0 grid place-items-center w-24 h-24 lg:w-28 lg:h-28 rounded-full bg-white p-2 relative ring-1 ring-accent/40">
+      <Image
+        src="/dsce-logo.png"
+        alt="Dayananda Sagar Institutions"
+        width={224}
+        height={224}
+        priority
+        className="w-full h-full object-contain"
+      />
     </div>
   );
 }
@@ -387,8 +332,15 @@ function ProblemAndObjectives() {
             Objectives
           </p>
           <ul className="grid sm:grid-cols-2 gap-px bg-border rounded-xl overflow-hidden border">
-            {objectives.map((o) => (
-              <li key={o.kicker} className="bg-bg p-6">
+            {objectives.map((o, i) => (
+              <li
+                key={o.kicker}
+                className={`bg-bg p-6 ${
+                  i === objectives.length - 1 && objectives.length % 2 === 1
+                    ? "sm:col-span-2"
+                    : ""
+                }`}
+              >
                 <div className="flex items-baseline justify-between mb-3">
                   <span className="font-mono text-xs text-muted">
                     {o.kicker}
