@@ -38,7 +38,7 @@ export function SendStatus({ stage }: Props) {
   const activeIdx = idxOf[stage.kind];
 
   return (
-    <div className="px-4 sm:px-6 pb-2 animate-fade-up">
+    <div className="px-4 sm:px-6 pt-3 pb-2 animate-fade-up">
       <div className="rounded-lg bg-surface/70 border border-border/60 px-3 py-2 flex items-center gap-3 text-[11px]">
         {stage.kind === "error" ? (
           <span className="text-danger font-mono">error · {stage.message}</span>

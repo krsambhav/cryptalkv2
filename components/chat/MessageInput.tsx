@@ -83,7 +83,7 @@ export function MessageInput({ convoId, myUid, coverPoolIds }: Props) {
             disabled={sending}
             placeholder="Write a message…"
             rows={1}
-            className="w-full resize-none bg-transparent px-4 py-3 text-[15px] outline-none placeholder:text-muted disabled:opacity-60"
+            className="w-full resize-none bg-transparent px-4 py-3 text-[15px] outline-none focus:outline-none focus-visible:outline-none placeholder:text-muted disabled:opacity-60"
             aria-label="message"
           />
         </div>
