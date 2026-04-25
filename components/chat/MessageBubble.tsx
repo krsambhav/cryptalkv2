@@ -38,6 +38,11 @@ export function MessageBubble({ msg, convoId, isMine, showRaw, staggerIndex }: P
   // Cap the stagger so a long history doesn't compound delay forever.
   const delay = Math.min(staggerIndex, 8) * 0.04;
 
+  // Show the cipher while we're still decrypting too — that way the
+  // cross-fade looks like the cipher dissolving into its message,
+  // not into a loading dot.
+  const renderRaw = showRaw || state.kind === "loading";
+
   return (
     <article
       className={`flex gap-2 sm:gap-3 ${isMine ? "flex-row-reverse" : "flex-row"} animate-fade-up`}
@@ -52,7 +57,7 @@ export function MessageBubble({ msg, convoId, isMine, showRaw, staggerIndex }: P
           layout="position"
           transition={{ type: "spring", stiffness: 380, damping: 32 }}
           className={`rounded-2xl overflow-hidden ${
-            showRaw
+            renderRaw
               ? "bg-bg-2 border border-border/60"
               : isMine
                 ? "bg-accent text-bg rounded-tr-sm"
@@ -60,7 +65,7 @@ export function MessageBubble({ msg, convoId, isMine, showRaw, staggerIndex }: P
           }`}
         >
           <AnimatePresence mode="wait" initial={false}>
-            {showRaw ? (
+            {renderRaw ? (
               <motion.div
                 key="raw"
                 initial={{ opacity: 0, scale: 0.96, filter: "blur(6px)" }}
