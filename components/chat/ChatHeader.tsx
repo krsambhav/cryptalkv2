@@ -9,9 +9,17 @@ interface Props {
   messageCount: number;
   showRaw: boolean;
   onToggleRaw(): void;
+  onUnlock(): void;
 }
 
-export function ChatHeader({ recipient, unlocked, messageCount, showRaw, onToggleRaw }: Props) {
+export function ChatHeader({
+  recipient,
+  unlocked,
+  messageCount,
+  showRaw,
+  onToggleRaw,
+  onUnlock,
+}: Props) {
   return (
     <header className="sticky top-0 z-10 backdrop-blur bg-bg/80 border-b border-border/60">
       <div className="px-4 lg:px-6 py-3.5 flex items-center gap-4">
@@ -29,7 +37,11 @@ export function ChatHeader({ recipient, unlocked, messageCount, showRaw, onToggl
           <h1 className="font-medium text-base truncate">{recipient}</h1>
         </div>
 
-        {unlocked && <ViewToggle showRaw={showRaw} onToggle={onToggleRaw} />}
+        {unlocked ? (
+          <ViewToggle showRaw={showRaw} onToggle={onToggleRaw} />
+        ) : (
+          <UnlockButton onClick={onUnlock} />
+        )}
 
         <div className="text-right text-[11px] hidden sm:block">
           <span className={`font-mono ${unlocked ? "text-success" : "text-muted"}`}>
@@ -41,6 +53,22 @@ export function ChatHeader({ recipient, unlocked, messageCount, showRaw, onToggl
         </div>
       </div>
     </header>
+  );
+}
+
+function UnlockButton({ onClick }: { onClick(): void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 hover:bg-accent/20 active:scale-[0.97] text-accent px-3 py-1.5 text-[11px] font-mono uppercase tracking-[0.16em] transition"
+    >
+      <svg width="11" height="11" viewBox="0 0 20 20" fill="none" aria-hidden>
+        <rect x="5" y="9" width="10" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
+        <path d="M7 9V7a3 3 0 016 0v2" stroke="currentColor" strokeWidth="1.6" />
+      </svg>
+      <span>Unlock</span>
+    </button>
   );
 }
 

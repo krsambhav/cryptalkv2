@@ -8,7 +8,6 @@ import { useSession } from "@/stores/session";
 import { getConversation, listenMessages, type MessageRow } from "@/lib/firebase";
 import type { ConversationDocT } from "@/types/firestore";
 import { ChatHeader } from "./ChatHeader";
-import { LockedView } from "./LockedView";
 import { PassphraseModal } from "./PassphraseModal";
 import { MessageList } from "./MessageList";
 import { MessageInput } from "./MessageInput";
@@ -64,17 +63,6 @@ export function ChatView({ convoId }: Props) {
     return () => unsub();
   }, [convo, convoId]);
 
-  // Open the passphrase modal automatically the first time we land here
-  // without a key. Don't auto-reopen after the user explicitly cancels.
-  const [autoPrompted, setAutoPrompted] = useState(false);
-  useEffect(() => {
-    if (loading || !convo) return;
-    if (!hasKey && !autoPrompted) {
-      setUnlockOpen(true);
-      setAutoPrompted(true);
-    }
-  }, [loading, convo, hasKey, autoPrompted]);
-
   if (loading || !convo || !user) {
     return (
       <div className="flex-1 flex items-center justify-center text-muted text-sm">
@@ -95,25 +83,25 @@ export function ChatView({ convoId }: Props) {
         messageCount={messages.length}
         showRaw={showRaw}
         onToggleRaw={() => setShowRaw((v) => !v)}
+        onUnlock={() => setUnlockOpen(true)}
       />
 
-      {!hasKey ? (
-        <LockedView recipient={recipient} onUnlock={() => setUnlockOpen(true)} />
+      <MessageList
+        messages={messages}
+        convoId={convoId}
+        myUid={user.uid}
+        recipient={recipient}
+        showRaw={!hasKey || showRaw}
+      />
+
+      {hasKey ? (
+        <MessageInput
+          convoId={convoId}
+          myUid={user.uid}
+          coverPoolIds={convo.coverPoolIds}
+        />
       ) : (
-        <>
-          <MessageList
-            messages={messages}
-            convoId={convoId}
-            myUid={user.uid}
-            recipient={recipient}
-            showRaw={showRaw}
-          />
-          <MessageInput
-            convoId={convoId}
-            myUid={user.uid}
-            coverPoolIds={convo.coverPoolIds}
-          />
-        </>
+        <LockedComposer onUnlock={() => setUnlockOpen(true)} />
       )}
 
       <PassphraseModal
@@ -123,6 +111,41 @@ export function ChatView({ convoId }: Props) {
         onUnlocked={() => setUnlockOpen(false)}
         onCancel={() => setUnlockOpen(false)}
       />
+    </div>
+  );
+}
+
+/**
+ * Bottom strip that replaces the message input while the conversation is
+ * locked. The cipher images are visible above; this is the call-to-action
+ * to unlock and reveal them.
+ */
+function LockedComposer({ onUnlock }: { onUnlock(): void }) {
+  return (
+    <div
+      className="sticky bottom-0 bg-bg/85 backdrop-blur-md border-t border-border/60"
+      style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
+    >
+      <div className="px-4 lg:px-6 py-3 flex items-center gap-3 justify-between">
+        <div className="flex items-center gap-2.5 min-w-0 text-[13px]">
+          <span className="shrink-0 inline-flex w-7 h-7 items-center justify-center rounded-full border border-accent/40 bg-accent/5 text-accent">
+            <svg width="13" height="13" viewBox="0 0 20 20" fill="none">
+              <rect x="5" y="9" width="10" height="8" rx="1.5" stroke="currentColor" strokeWidth="1.4" />
+              <path d="M7 9V7a3 3 0 016 0v2" stroke="currentColor" strokeWidth="1.4" />
+            </svg>
+          </span>
+          <span className="truncate">
+            <span className="text-text">Each photograph hides a message.</span>{" "}
+            <span className="text-text-2 hidden sm:inline">Enter the passphrase to read & reply.</span>
+          </span>
+        </div>
+        <button
+          onClick={onUnlock}
+          className="shrink-0 rounded-full bg-accent text-bg px-5 py-2 text-[13px] font-medium hover:opacity-90 active:scale-[0.97] transition"
+        >
+          Unlock
+        </button>
+      </div>
     </div>
   );
 }
