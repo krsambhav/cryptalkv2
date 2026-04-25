@@ -74,7 +74,7 @@ export function MessageInput({ convoId, myUid, coverPoolIds }: Props) {
       <SendStatus stage={stage} />
 
       <div className="px-3 sm:px-4 lg:px-6 py-3 flex items-end gap-2">
-        <div className="flex-1 rounded-2xl border bg-bg-2 focus-within:border-accent transition-colors">
+        <div className="flex-1 rounded-2xl border bg-bg-2 transition-colors">
           <textarea
             ref={taRef}
             value={text}
