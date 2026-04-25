@@ -135,7 +135,9 @@ export function ChatView({ convoId }: Props) {
           message.success("Saved passphrase cleared.");
         }}
         onLock={() => {
+          clearPhrase(convoId);
           clearKey(convoId);
+          setPhraseSaved(false);
           setShowRaw(false);
         }}
       />
