@@ -56,6 +56,16 @@ firebase deploy --only firestore:rules,storage:rules
 > Both rule sets restrict access to conversation participants only and cap
 > uploaded PNGs at 20 MB.
 
+Configure Storage CORS so the receiver's browser can read pixels back through
+canvas (`crossOrigin="anonymous"`):
+
+```bash
+gsutil cors set cors.json gs://<your-storage-bucket>
+```
+
+The included `cors.json` allows GET from `localhost:3000` only — add your
+production origin before deploying.
+
 ### 3. (Optional) Regenerate cover images
 
 The repo ships with eight pre-rendered 2000×1500 procedural covers. To

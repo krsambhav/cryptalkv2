@@ -187,7 +187,7 @@ export async function getConversation(
 ): Promise<{ id: string; doc: ConversationDocT } | null> {
   const snap = await getDoc(doc(fbDb(), "conversations", id));
   if (!snap.exists()) return null;
-  return { id: snap.id, doc: ConversationDoc.parse(snap.data()) };
+  return { id: snap.id, doc: ConversationDoc.parse(normalizeConvoData(snap.data())) };
 }
 
 export function listenMyConversations(
@@ -203,11 +203,26 @@ export function listenMyConversations(
   return onSnapshot(q, (snap) => {
     const out = snap.docs.map((d) => ({
       id: d.id,
-      doc: ConversationDoc.parse(d.data()),
+      doc: ConversationDoc.parse(normalizeConvoData(d.data())),
     }));
     out.sort((a, b) => (b.doc.lastMessageAt ?? b.doc.createdAt) - (a.doc.lastMessageAt ?? a.doc.createdAt));
     cb(out);
   });
+}
+
+/**
+ * lastMessageAt is written via serverTimestamp(), so reads come back as a
+ * Firestore Timestamp instance — not a number. The zod schema expects a
+ * number, so we coerce here at the read boundary.
+ */
+function normalizeConvoData(raw: DocumentData): DocumentData {
+  return {
+    ...raw,
+    lastMessageAt:
+      raw.lastMessageAt instanceof Timestamp
+        ? raw.lastMessageAt.toMillis()
+        : (raw.lastMessageAt ?? null),
+  };
 }
 
 // ---- messages -------------------------------------------------------------
