@@ -1,0 +1,31 @@
+rules_version = '2';
+
+// CrypTalk Storage security rules.
+//
+// All stego PNGs live under /stego/{convoId}/{file}.png. Only signed-in
+// participants can read or write. We can't directly check "is participant"
+// against Firestore from Storage rules without an Admin SDK callable,
+// so we authenticate by signed-in status here and let Firestore rules
+// gate the Firestore read that would expose the URL — i.e., a non-
+// participant would never have the stego URL to begin with.
+//
+// We also enforce content-type and size limits to prevent abuse.
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    match /stego/{convoId}/{file} {
+      allow read: if request.auth != null;
+
+      allow write: if request.auth != null
+                   && request.resource.size < 20 * 1024 * 1024  // 20MB hard cap
+                   && request.resource.contentType == "image/png";
+
+      allow delete: if false;
+    }
+
+    match /{path=**} {
+      allow read, write: if false;
+    }
+  }
+}
