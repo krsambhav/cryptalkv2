@@ -1,5 +1,9 @@
 "use client";
 
+// antd v5 declares peerDeps for React 16-18; this side-effect import enables
+// the official React 19 compatibility shim.
+import "@ant-design/v5-patch-for-react-19";
+
 import { App, ConfigProvider, theme as antdTheme } from "antd";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import type { ReactNode } from "react";

@@ -50,7 +50,7 @@ export function PassphraseModal({ open, convoId, saltBase64, onUnlocked, onCance
       footer={null}
       width={520}
       centered
-      destroyOnClose
+      destroyOnHidden
       title={null}
     >
       <div className="py-2">

@@ -42,7 +42,7 @@ export function PassphraseReveal({ open, passphrase, recipientEmail, onConfirm }
       maskClosable={false}
       width={560}
       centered
-      destroyOnClose
+      destroyOnHidden
     >
       <div className="py-2">
         <p className="text-xs uppercase tracking-[0.22em] text-accent">one-time reveal</p>

@@ -99,7 +99,7 @@ export function NewConversationModal({ open, onClose, selfUid, selfEmail }: Prop
       title={null}
       width={500}
       centered
-      destroyOnClose
+      destroyOnHidden
     >
       <div className="py-2">
         <p className="text-xs uppercase tracking-[0.22em] text-accent">new conversation</p>
