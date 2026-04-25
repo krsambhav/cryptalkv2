@@ -9,9 +9,10 @@ interface Props {
   convoId: string;
   myUid: string;
   recipient: string;
+  showRaw: boolean;
 }
 
-export function MessageList({ messages, convoId, myUid, recipient }: Props) {
+export function MessageList({ messages, convoId, myUid, recipient, showRaw }: Props) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const liveRef = useRef<HTMLDivElement>(null);
   const lastIdRef = useRef<string | null>(null);
@@ -59,12 +60,14 @@ export function MessageList({ messages, convoId, myUid, recipient }: Props) {
       {groups.map((g) => (
         <section key={g.dayLabel} className="space-y-3.5">
           <DayDivider label={g.dayLabel} />
-          {g.rows.map((m) => (
+          {g.rows.map((m, i) => (
             <MessageBubble
               key={m.id}
               msg={m}
               convoId={convoId}
               isMine={m.senderId === myUid}
+              showRaw={showRaw}
+              staggerIndex={i}
             />
           ))}
         </section>

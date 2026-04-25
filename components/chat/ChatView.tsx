@@ -26,6 +26,7 @@ export function ChatView({ convoId }: Props) {
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState<MessageRow[]>([]);
   const [unlockOpen, setUnlockOpen] = useState(false);
+  const [showRaw, setShowRaw] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -88,7 +89,13 @@ export function ChatView({ convoId }: Props) {
 
   return (
     <div className="flex flex-col h-full min-h-dvh lg:min-h-0">
-      <ChatHeader recipient={recipient} unlocked={hasKey} messageCount={messages.length} />
+      <ChatHeader
+        recipient={recipient}
+        unlocked={hasKey}
+        messageCount={messages.length}
+        showRaw={showRaw}
+        onToggleRaw={() => setShowRaw((v) => !v)}
+      />
 
       {!hasKey ? (
         <LockedView recipient={recipient} onUnlock={() => setUnlockOpen(true)} />
@@ -99,6 +106,7 @@ export function ChatView({ convoId }: Props) {
             convoId={convoId}
             myUid={user.uid}
             recipient={recipient}
+            showRaw={showRaw}
           />
           <MessageInput
             convoId={convoId}

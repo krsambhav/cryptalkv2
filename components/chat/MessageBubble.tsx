@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { runDecrypt, type DecryptResult } from "@/lib/pipeline";
 import type { MessageRow } from "@/lib/firebase";
 import { useSession } from "@/stores/session";
@@ -10,9 +11,11 @@ interface Props {
   msg: MessageRow;
   convoId: string;
   isMine: boolean;
+  showRaw: boolean;
+  staggerIndex: number;
 }
 
-export function MessageBubble({ msg, convoId, isMine }: Props) {
+export function MessageBubble({ msg, convoId, isMine, showRaw, staggerIndex }: Props) {
   const key = useSession((s) => s.getKey(convoId));
   const [state, setState] = useState<DecryptResult>({ kind: "loading" });
 
@@ -32,6 +35,9 @@ export function MessageBubble({ msg, convoId, isMine }: Props) {
   const cover = getCover(msg.coverId);
   const time = formatTime(msg.ts);
 
+  // Cap the stagger so a long history doesn't compound delay forever.
+  const delay = Math.min(staggerIndex, 8) * 0.04;
+
   return (
     <article
       className={`flex gap-2 sm:gap-3 ${isMine ? "flex-row-reverse" : "flex-row"} animate-fade-up`}
@@ -42,15 +48,60 @@ export function MessageBubble({ msg, convoId, isMine }: Props) {
           isMine ? "items-end" : "items-start"
         }`}
       >
-        <div
-          className={`rounded-2xl px-4 py-2.5 ${
-            isMine
-              ? "bg-accent text-bg rounded-tr-sm"
-              : "bg-surface text-text rounded-tl-sm"
+        <motion.div
+          layout="position"
+          transition={{ type: "spring", stiffness: 380, damping: 32 }}
+          className={`rounded-2xl overflow-hidden ${
+            showRaw
+              ? "bg-bg-2 border border-border/60"
+              : isMine
+                ? "bg-accent text-bg rounded-tr-sm"
+                : "bg-surface text-text rounded-tl-sm"
           }`}
         >
-          <Body state={state} />
-        </div>
+          <AnimatePresence mode="wait" initial={false}>
+            {showRaw ? (
+              <motion.div
+                key="raw"
+                initial={{ opacity: 0, scale: 0.96, filter: "blur(6px)" }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  filter: "blur(0px)",
+                  transition: { duration: 0.32, delay, ease: [0.16, 1, 0.3, 1] },
+                }}
+                exit={{
+                  opacity: 0,
+                  scale: 0.97,
+                  filter: "blur(4px)",
+                  transition: { duration: 0.18, ease: [0.4, 0, 1, 1] },
+                }}
+              >
+                <RawView msg={msg} isMine={isMine} />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="plain"
+                initial={{ opacity: 0, scale: 0.96, filter: "blur(6px)" }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  filter: "blur(0px)",
+                  transition: { duration: 0.32, delay, ease: [0.16, 1, 0.3, 1] },
+                }}
+                exit={{
+                  opacity: 0,
+                  scale: 0.97,
+                  filter: "blur(4px)",
+                  transition: { duration: 0.18, ease: [0.4, 0, 1, 1] },
+                }}
+                className="px-4 py-2.5"
+              >
+                <Body state={state} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
         <div className="mt-1.5 px-1 flex items-center gap-2 text-[10px] font-mono text-muted">
           <span>{time}</span>
           <span aria-hidden>·</span>
@@ -58,6 +109,29 @@ export function MessageBubble({ msg, convoId, isMine }: Props) {
         </div>
       </div>
     </article>
+  );
+}
+
+/**
+ * Raw view — the actual stego PNG that lives in Storage. Fetched through
+ * the same-origin proxy that already wraps msg.stegoUrl. This is what the
+ * server sees: just a picture.
+ */
+function RawView({ msg, isMine }: { msg: MessageRow; isMine: boolean }) {
+  return (
+    <div className="flex flex-col">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={msg.stegoUrl}
+        alt={`stego cipher · ${msg.coverId}`}
+        className="block w-full max-w-[260px] aspect-[4/3] object-cover"
+        loading="lazy"
+      />
+      <div className="px-3 py-2 flex items-center justify-between gap-2 text-[10px] font-mono text-muted">
+        <span className="uppercase tracking-[0.16em]">on the wire</span>
+        <span className={isMine ? "text-accent" : "text-text-2"}>image/png</span>
+      </div>
+    </div>
   );
 }
 
