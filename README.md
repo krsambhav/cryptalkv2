@@ -56,15 +56,11 @@ firebase deploy --only firestore:rules,storage:rules
 > Both rule sets restrict access to conversation participants only and cap
 > uploaded PNGs at 20 MB.
 
-Configure Storage CORS so the receiver's browser can read pixels back through
-canvas (`crossOrigin="anonymous"`):
-
-```bash
-gsutil cors set cors.json gs://<your-storage-bucket>
-```
-
-The included `cors.json` allows GET from `localhost:3000` only — add your
-production origin before deploying.
+> **CORS is not required.** Stego PNGs are served through a same-origin
+> proxy at `/api/stego` (see [`app/api/stego/route.ts`](./app/api/stego/route.ts))
+> so canvas pixel readback works on any deployment domain without
+> bucket-side configuration. The proxy pins the upstream host and bucket
+> path to prevent SSRF.
 
 ### 3. (Optional) Regenerate cover images
 

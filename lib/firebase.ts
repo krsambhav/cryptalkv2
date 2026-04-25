@@ -292,13 +292,23 @@ export function listenMessages(
       rows.push({
         id: d.id,
         senderId: String(raw.senderId),
-        stegoUrl: String(raw.stegoUrl),
+        stegoUrl: proxiedStegoUrl(String(raw.stegoUrl)),
         coverId: String(raw.coverId),
         ts: ts.toMillis(),
       });
     }
     cb(rows);
   });
+}
+
+/**
+ * Rewrite a raw Firebase Storage download URL to its same-origin proxy.
+ * The proxy lives at /api/stego and validates that we only fetch from
+ * our own bucket. Same-origin loading lets canvas read pixels without
+ * any cross-origin / CORS configuration on the bucket.
+ */
+export function proxiedStegoUrl(rawUrl: string): string {
+  return `/api/stego?url=${encodeURIComponent(rawUrl)}`;
 }
 
 // ---- helpers --------------------------------------------------------------
