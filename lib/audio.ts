@@ -10,7 +10,7 @@
  * is set via MediaRecorder's audioBitsPerSecond option.
  */
 
-export const MAX_DURATION_MS = 60_000;
+export const MAX_DURATION_MS = 4 * 60 * 1000; // 4 minutes
 export const TARGET_BITRATE = 32_000; // 32 kbps
 
 const PREFERRED_MIMES: ReadonlyArray<string> = [
